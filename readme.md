@@ -64,12 +64,13 @@ TBI and Tumor_2 are data from our institutions that cannot be made publicly avai
 
 #### Quick test
 If you only want to test our pretrained model on your database, you can preprocess your database with the previously mentioned preprocess pipeline and then simply run quick_test.py with command line
+
 command line arguments are shown as follows:  
 ```--img_path``` The path of the folder that contains all the image files  
 ```--seg_path``` The path of the folder that contains all the label files  
 ```--modalities_to_test``` The modalities for testing (the index of the modalities for that input) using '_' to separate. if 0_1_2 for BRATS (FLAIR,T1,T1c,T2), it means test on FLAIR, T1, T1c  
 ```--channel_m``` The allocated channel index of the modalities in the test input (start from 0) Using '_' to separate. The pretrain model we provided (train on five databases) contains six modalities (PD, FLAIR, SWI, T1, T1C, T2). The corresponding channel indexes are PD:0 FLAIR:1 SWI:2 T1:3 T1C:4 T2:5. For example if you want to test the model on WMH (FLAIR, T1), --channel_m will be 1_3. If you have modalities that are not included in the pre-train, You can use the index of any unused channel for it and this modality in "--modalities_to_test".  
-An example of quick test on WMH Database with all the available modalities:
+An example of quick test on WMH Database with all the available modalities:  
 ```
 python quick_test.py --img_path data/WMH/Images --seg_path data/WMH/Labels --modalities_to_test 0_1 --channel_m 1_3
 ```
@@ -94,7 +95,7 @@ python train.py --device_id 1 --save_name test --datasets BRATS_ATLAS --randomly
 
 
 #### Finetuning
-1. Change the database path in the config.py file. Set the contained modalities for each database. Set the training size and total size of the databases. (In our work, we put all the samples in one folder. As a quick setting, We sorted the images with the file name and split training and testing databases depending on this order. i.e., use the first m images for training; m is the training size)  (When adding a new database, make sure that you add the database path. containing modalities, training size and total size. )
+1. Change the database path in the config.py file (Database_config). Set the contained modalities for each database. Set the training size and total size of the databases. (In our work, we put all the samples in one folder. As a quick setting, We sorted the images with the file name and split training and testing databases depending on this order. i.e., use the first m images for training; m is the training size)  (When adding a new database, make sure that you add the database path. containing modalities, training size and total size. )
 2. Change training setting in the Finetune_config class of the config.py (e.g. epoch,lr)
 3. Run the train_finetune.py file with the command line
 
@@ -114,7 +115,7 @@ python train_finetune.py --device_id 1 --save_name test --datasets ISLES --rando
 
 
 #### Testing
-1. Change the database path in config.py. Set the contained modalities for each database. Set the val_size of the test database. (This is only for testing, this allowed you to use part of the images for testing, We sorted the images with the file name and used the last n images for testing. n is the val_size.)
+1. Change the database path in config.py (Database_config). Set the contained modalities for each database. Set the val_size of the test database. (This is only for testing, this allowed you to use part of the images for testing, We sorted the images with the file name and used the last n images for testing. n is the val_size.)
 2. Change the setting in the Test_config Class of the config.py. (If you use a new database,  the allocated channel indexes need to be added to "model_channel_map" as explained in the code.)
 3. Run the test_master.py file with the command line
 
